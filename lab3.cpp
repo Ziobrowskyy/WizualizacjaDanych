@@ -96,27 +96,24 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
 }
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-//    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-//        glfwWindowShouldClose(window);
-//    }
     if (action != GLFW_PRESS)
         return;
-        switch (key) {
-            case (GLFW_KEY_ESCAPE):
-                glfwSetWindowShouldClose(window, true);
-                break;
-            case (GLFW_KEY_1):
-                primitive = GL_POINTS;
-                break;
-            case (GLFW_KEY_2):
-                primitive = GL_LINES;
-                break;
-            case (GLFW_KEY_3):
-                primitive = GL_TRIANGLES;
-                break;
-            default:
-                break;
-        }
+    switch (key) {
+        case (GLFW_KEY_ESCAPE):
+            glfwSetWindowShouldClose(window, true);
+            break;
+        case (GLFW_KEY_1):
+            primitive = GL_POINTS;
+            break;
+        case (GLFW_KEY_2):
+            primitive = GL_LINES;
+            break;
+        case (GLFW_KEY_3):
+            primitive = GL_TRIANGLES;
+            break;
+        default:
+            break;
+    }
 }
 
 int main() {
