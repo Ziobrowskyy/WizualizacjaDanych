@@ -34,6 +34,7 @@ static GLfloat *vertices = new GLfloat[triangles * VERTEX_DATA_COUNT * 3]{1.0f};
 static GLuint VBO{0};
 
 static auto primitive = GL_TRIANGLES;
+static auto use_cursor = false;
 
 void draw_triangles(size_t count) {
     triangles = count;
@@ -83,7 +84,9 @@ void draw_triangles(size_t count) {
 }
 
 void cursor_position_callback(GLFWwindow *window, double xpos, double ypos) {
-    constexpr int max_vert = 20;
+    if(!use_cursor)
+        return;
+    constexpr int max_vert = 200;
     auto vert = static_cast<size_t>(max_vert * ypos / W_HEIGHT);
     draw_triangles(vert);
 }
@@ -96,11 +99,15 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
 }
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+//    std::cout << "key = " << key << ", scancode = " << scancode << std::endl;`
     if (action != GLFW_PRESS)
         return;
     switch (key) {
         case (GLFW_KEY_ESCAPE):
             glfwSetWindowShouldClose(window, true);
+            break;
+        case (GLFW_KEY_GRAVE_ACCENT): // tilda
+            use_cursor = !use_cursor;
             break;
         case (GLFW_KEY_1):
             primitive = GL_POINTS;
@@ -182,7 +189,7 @@ int main() {
     glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, VERTEX_DATA_COUNT * sizeof(GLfloat),
                           (void *) (2 * sizeof(GLfloat)));
 
-//    glfwSetCursorPosCallback(window, cursor_position_callback);
+    glfwSetCursorPosCallback(window, cursor_position_callback);
     glfwSetScrollCallback(window, scroll_callback);
     glfwSetKeyCallback(window, key_callback);
 
