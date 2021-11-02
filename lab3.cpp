@@ -29,9 +29,7 @@ outColor = vec4(Color, 1.0);
 
 #define VERTEX_DATA_COUNT 6
 static size_t triangles = 1;
-static GLfloat *vertices = new GLfloat[triangles * VERTEX_DATA_COUNT * 3]{1.0f};
-
-static GLuint VBO{0};
+static GLfloat *vertices = new GLfloat[triangles * 3 * VERTEX_DATA_COUNT]{1.0f};
 
 static auto primitive = GL_TRIANGLES;
 static auto use_cursor = false;
@@ -78,13 +76,11 @@ void draw_triangles(size_t count) {
         vertices[i + 2 * VERTEX_DATA_COUNT + 4] = 1.0f;
         vertices[i + 2 * VERTEX_DATA_COUNT + 5] = 1.0f;
     }
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * triangles * VERTEX_DATA_COUNT * 3, vertices, GL_STATIC_DRAW);
 }
 
 void cursor_position_callback(GLFWwindow *window, double xpos, double ypos) {
-    if(!use_cursor)
+    if (!use_cursor)
         return;
     constexpr int max_vert = 200;
     auto vert = static_cast<size_t>(max_vert * ypos / W_HEIGHT);
@@ -170,13 +166,14 @@ int main() {
     glDeleteShader(fragmentShader);
 
 
-//    GLuint VAO{0}, VBO{0};
-    GLuint VAO{0};
+    GLuint VAO{0}, VBO{0};
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
     glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
 
     draw_triangles(10);
 
